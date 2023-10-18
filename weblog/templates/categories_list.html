@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head_title%}{{post.title}} | {{post.author}}{%endblock%}
+{% block content %}
+
+
+
+{%for item in cat_menu_list%}
+                  <li><a class="dropdown-item" href="{%url 'category' item%}">{{item}}</a></li>
+                  
+                  {%endfor%}
+    
+{%endblock%}
+
+
+
+
+<!-- Main Body -->
+

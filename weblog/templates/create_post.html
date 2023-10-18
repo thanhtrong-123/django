@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content%}
+
+{% if user.is_authenticated and user.is_superuser or user.is_staff%}
+<h1>Create BLog Post</h1>
+<div class="form-group">
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form.as_p }}
+    <button class="btn btn-primary">Post</button>
+</form>
+</div>
+
+<script>
+    var name = "{{user.id}}";
+    document.getElementById("id_current").value = name;
+</script>
+{%else%}
+<h1>You're not allowed here</h1>
+{%endif%}
+
+{%endblock%}

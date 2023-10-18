@@ -1,0 +1,218 @@
+
+{% extends "base.html" %}
+{% block content%}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+</head>
+<body class="w3-light-grey">
+    <style>
+        * {
+            box-sizing: border-box;
+          }
+          
+          body {
+            font-family: Arial;
+            padding: 20px;
+            background: #f1f1f1;
+          }
+          
+          /* Header/Blog Title */
+          .header {
+            padding: 30px;
+            font-size: 40px;
+            text-align: center;
+            background: white;
+          }
+          
+          /* Create two unequal columns that floats next to each other */
+          /* Left column */
+          .leftcolumn {
+            float: left;
+            width: 75%;
+          }
+          
+          /* Right column */
+          .rightcolumn {
+            float: left;
+            width: 25%;
+            padding-left: 20px;
+          }
+          
+          /* Fake image */
+          .fakeimg {
+            background-color: #aaa;
+            width: 100%;
+            padding: 20px;
+          }
+          .w3-white, .w3-hover-white:hover {
+            padding-bottom: 2px;
+          }
+          /* Add a card effect for articles */
+          .card {
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+          }
+          
+          /* Clear floats after the columns */
+          .row:after {
+            content: "";
+            display: table;
+            clear: both;
+          }
+          
+          /* Footer */
+          .footer {
+            padding: 20px;
+            text-align: center;
+            background: #ddd;
+            margin-top: 20px;
+          }
+          
+          /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+          @media screen and (max-width: 800px) {
+            .leftcolumn, .rightcolumn {
+              width: 100%;
+              padding: 0;
+            }
+        }
+        .w3-col.m8, .w3-twothird {
+            width: 100%;
+        }
+          .buttoncomment{
+            float: right;
+          }
+        
+    </style>
+<!-- w3-content defines a container for fixed size centered content, 
+and is wrapped around the whole page content, except for the footer in this example -->
+<div class="w3-content" style="max-width:1400px">
+
+<!-- Header -->
+<header class="w3-container w3-center w3-padding-32"> 
+  <h1><b>MY BLOG</b></h1>
+  <p>Welcome to the blog of <span class="w3-tag">Group 8</span></p>
+</header>
+
+<!-- Grid -->
+<div class="w3-row">
+    <h1 style='color:red;'> DRAFT </h1>
+<!-- Blog entries -->
+<div class="w3-col l8 s12">
+    {% for post in object_list %}
+    
+    {% if post.draft == True%}
+  <!-- Blog entry -->
+  <div class="w3-card-4 w3-margin w3-white">
+    {% if post.header_image%}
+    <img src="{{post.header_image.url}}" alt="Nature" style="width:100%"> 
+    {% else %}
+    <img src="{%static 'weblog/images/defaultimg.png'%}" alt="Nature" style="width:100%"> 
+    {% endif %}
+    <div class="w3-container">
+      
+      <h3><b>{{post.title}}</b></h3>
+      <h5>{{post.author}} , <span class="w3-opacity">{{post.post_date}}</span></h5>
+    
+    </div>
+    <div class="w3-container">
+      <p>{{post.body|safe|linebreaks|slice:300}}</p>
+      <div class="w3-row">
+        <div class="w3-col m8 s12">
+                <a href="{%url 'ArticalDetail' post.pk%}" class="w3-button w3-white w3-border "><b>Read More »</b></a>
+                
+                {% if user.is_authenticated and user.is_superuser or user.is_staff %}
+                <a href="{%url 'EditPostView' post.pk%}" class="btn btn-success">Edit</a> 
+                <a href="{%url 'DeletePostView' post.pk%}" class="btn btn-danger">Delete</a>
+                
+                {% endif %}
+                {%if user.is_authenticated %}
+                <button class="w3-button w3-white w3-border" onclick="likeFunction(this)" ><b><i class="fa fa-thumbs-up"></i> Like <span class="w3-tag w3-white "> {{post.total_likes}} 
+                </span></b></button>
+                {%else%}
+                {% endif %}
+                
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <hr>
+    {% endif %}
+    {% endfor %}
+
+<!-- END BLOG ENTRIES -->
+</div>
+
+<!-- Introduction menu -->
+<div class="w3-col l4">
+  <!-- About Card -->
+  <div class="w3-card w3-margin w3-margin-top">
+  {% comment %} <img src="/w3images/avatar_g.jpg" style="width:100%"> {% endcomment %}
+    <div class="w3-container w3-white">
+      <h4><b>About Us</b></h4>
+      <p>Blogging is a popular online activity that involves creating and maintaining a blog,
+         which is a website or a part of a website where individuals, groups, 
+         or businesses regularly publish written content. These posts are usually 
+         organized in reverse chronological order, with the most recent entries displayed first. 
+         Blogs typically focus on specific topics or themes, and they can serve various purposes, 
+         from personal expression to professional communication. </p>
+    </div>
+    
+  </div><hr>
+  
+
+  <!-- Labels / tags -->
+ 
+  
+<!-- END Introduction Menu -->
+</div>
+
+<!-- END GRID -->
+</div><br>
+
+<!-- END w3-content -->
+</div>
+<div class="containertothetop">
+  <a href="#" class="w3-button w3-black w3-padding-large"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
+</div>
+
+
+
+<!-- Footer -->
+<footer class="w3-container w3-dark-grey w3-padding-32 w3-margin-top">
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+      <li class="page-item"><span class="page-link" href="#">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+      {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% comment %} <button class="w3-button w3-black w3-disabled w3-padding-large w3-margin-bottom">Previous</button>
+  <button class="w3-button w3-black w3-padding-large w3-margin-bottom">Next »</button> {% endcomment %}
+  <p class="m-0 text-white text-center ">Copyright &copy; My Blog</p>
+  
+</footer>
+
+</body>
+</html>
+
+{%endblock%}

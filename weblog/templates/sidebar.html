@@ -1,0 +1,29 @@
+{% block sidebar %}
+
+<style>
+        .card{
+            box-shadow: 0 16px 48px #E3E7EB;
+        }
+
+</style>
+
+<!-- Sidebar Widgets Column -->
+<div class="w3-col l4">
+    <!-- About Card -->
+    <div class="w3-card w3-margin w3-margin-top">
+    {% comment %} <img src="/w3images/avatar_g.jpg" style="width:100%"> {% endcomment %}
+      <div class="w3-container w3-white">
+        <h4><b>About Us</b></h4>
+        <p>Blogging is a popular online activity that involves creating and maintaining a blog,
+           which is a website or a part of a website where individuals, groups, 
+           or businesses regularly publish written content. These posts are usually 
+           organized in reverse chronological order, with the most recent entries displayed first. 
+           Blogs typically focus on specific topics or themes, and they can serve various purposes, 
+           from personal expression to professional communication. </p>
+           <a href="{% url 'about'%}"
+           class="btn btn-danger">Know more!</a>
+      </div>
+      
+    </div><hr>
+
+{% endblock sidebar %}

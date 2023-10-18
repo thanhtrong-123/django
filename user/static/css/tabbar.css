@@ -1,0 +1,50 @@
+/* Trong tệp tabbar.css */
+.nav-link {
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    color: #333; /* Màu văn bản */
+    border: 1px solid #ccc; /* Đường viền xung quanh các tab */
+    border-radius: 5px; /* Bo góc các tab */
+    margin-right: 10px; /* Khoảng cách giữa các tab */
+    width: 100%;
+}
+
+.nav-link.active {
+    background-color: #007bff; /* Màu nền khi tab đang active */
+    color: #fff; /* Màu văn bản khi tab đang active */
+}
+
+.nav-link:hover {
+    background-color: #f8f9fa; /* Màu nền khi di chuột qua tab */
+    color: #007bff; /* Màu văn bản khi di chuột qua tab */
+}
+.user-container {
+    display: flex;
+    justify-content: flex-end; /* Để nội dung nằm ở bên phải */
+    align-items: center; /* Để căn giữa theo chiều dọc */
+}
+.user-container p{
+    color: #14d150;
+    /* Để căn giữa theo chiều dọc */
+}
+/* CSS cho container con */
+.user-info {
+    background-color: #f0f0f0; /* Màu nền cho phần thông tin người dùng */
+    padding: 10px; /* Khoảng cách nội dung và viền */
+    border-radius: 5px; /* Bo tròn góc */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng đổ */
+}
+
+.user-info p {
+    margin: 0; /* Loại bỏ khoảng cách giữa các đoạn văn bản */
+}
+
+.user-info a {
+    text-decoration: none; /* Loại bỏ gạch chân mặc định cho liên kết */
+    color: #007bff; /* Màu cho liên kết */
+}
+
+.user-info a:hover {
+    text-decoration: underline; /* Gạch chân khi di chuột qua liên kết */
+}

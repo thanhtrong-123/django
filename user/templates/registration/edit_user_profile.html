@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content%}
+
+{% if user.is_authenticated %}
+    {% if user.id == profile.user.id%}
+<h1>Edit Profile Page</h1>
+<div class="form-group">
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form.as_p }}
+    <button class="btn btn-primary">Update Profile</button>
+</form>
+</div>
+{%else%}
+You are not the correct User to edit this page
+<script>
+    var name = "{{user.id}}";
+    document.getElementById("id_current").value = name;
+</script>
+{%endif%}
+{%else%}
+You're not allowed here
+{%endif%}
+{%endblock%}

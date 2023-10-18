@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head_title%}{{post.title}} | {{post.author}}{%endblock%}
+{% block content %}
+
+<style>
+    .navbar-nav{
+        width: 100%;
+    }
+    
+    @media(min-width:568px){
+        .end{
+            margin-left: auto;
+        }
+    }
+    
+    @media(max-width:768px){
+        #post{
+            width: 100%;
+        }
+    }
+    #clicked{
+        padding-top: 1px;
+        padding-bottom: 1px;
+        text-align: center;
+        width: 100%;
+        background-color: #ecb21f;
+        border-color: #a88734 #9c7e31 #846a29;
+        color: black;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 13px; 
+    }
+    
+    #profile{
+        background-color: unset;
+        
+    } 
+    
+    #post{
+        margin: 10px;
+        padding: 6px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        text-align: center;
+        background-color: #ecb21f;
+        border-color: #a88734 #9c7e31 #846a29;
+        color: black;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 13px;
+        width: 50%;
+    }
+    
+    body{
+        background-color: white;
+    }
+    
+    #nav-items li a,#profile{
+        text-decoration: none;
+        color: rgb(224, 219, 219);
+        background-color: black;
+    }
+    
+    
+    .comments{
+        margin-top: 5%;
+        margin-left: 20px;
+    }
+    
+    .darker{
+        border: 1px solid #ecb21f;
+        background-color: black;
+        float: right;
+        border-radius: 5px;
+        padding-left: 40px;
+        padding-right: 30px;
+        padding-top: 10px;
+    }
+    
+    .comment{
+        border: 1px solid rgba(16, 46, 46, 1);
+        background-color: white;
+        float: left;
+        border-radius: 5px;
+        padding-left: 40px;
+        padding-right: 30px;
+        padding-top: 10px;
+        
+    }
+    .comment h4,.comment span,.darker h4,.darker span{
+        display: inline;
+    }
+    
+    .comment p,.comment span,.darker p,.darker span{
+        color: black;
+    }
+    
+    h1,h4{
+        color: black;
+        font-weight: bold;
+    }
+    label{
+        color: rgb(212, 208, 208);
+    }
+    
+    #align-form{
+        margin-top: 20px;
+    }
+    .form-group p a{
+        color: white;
+    }
+    
+    #checkbx{
+        background-color: black;
+    }
+    
+    #darker img{
+        margin-right: 15px;
+        position: static;
+    }
+    
+    .form-group input,.form-group textarea{
+        background-color: black
+        border: 1px solid rgba(16, 46, 46, 1);
+        border-radius: 12px;
+    }
+    
+    form{
+        {% comment %} border: 1px solid rgba(16, 46, 46, 1);
+        background-color: rgba(16, 46, 46, 0.973); {% endcomment %}
+        border-radius: 5px;
+        padding: 20px;
+     } 
+    center{
+        width: 50%
+        
+        display: block
+        margin-left: auto
+        margin-right: auto
+    }
+    img{
+        width: 100%
+    }
+</style>
+{% comment %} current user: {{user.id}} | 
+post auther: {{post.author.id}} {% endcomment %}
+
+<div class="container">
+    <div class="row g-0">
+        <div class="col-md-8">
+
+            <h1>{{post.title}}</h1><hr>
+                {% if post.draft %} <span style='color:red;'>Draft</span> {% endif %}
+            <small>By: {{ post.author}} | {{post.post_date}}</small><br/></br>
+                {% if post.header_image%}
+            <img src="{{ post.header_image.url }}" >
+                {%endif%}
+            <p class="center">{{post.body|safe|linebreaks}}</p>
+        </div>
+        
+        <div class="col-md-4">
+        </br></br></br></br></br>
+            <div class="card">
+            <div class="card-body">
+            
+            <h4><b>About Us</b></h4>
+            <p>Blogging is a popular online activity that involves creating and maintaining a blog,
+            which is a website or a part of a website where individuals, groups, 
+            or businesses regularly publish written content. These posts are usually 
+            organized in reverse chronological order, with the most recent entries displayed first. 
+            Blogs typically focus on specific topics or themes, and they can serve various purposes, 
+            from personal expression to professional communication. </p>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<br/>
+{% comment %} {{post.pk}} {% endcomment %}
+<br/><br/>
+
+{% comment %} <a href="{% url 'HomeView' %}" class="btn btn-success">Back</a><br/><br/> {% endcomment %}
+<br/>
+{% if user.is_authenticated %}
+<form action="{% url 'like_post' post.pk %}" method="Post">
+    {% csrf_token %}
+    {% if liked %}
+    <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary">UnLike</button> 
+    {% else %}
+    <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary">Like</button>
+    {%endif%}
+     - {{total_likes}} Likes
+</form>
+{%else%}
+<a href="{% url 'login'%}" class="btn btn-primary">Like</a>
+{% endif %}
+</br>
+</br>
+<section>
+    <div class="container">
+        <div class="row">
+        
+            {% comment %} <div class="col-sm-5 col-md-6 col-12 pb-4"> {% endcomment %}
+                <h1>Comments:</h1>
+                
+                {% if not post.comments.all %}
+                
+                {% else %}
+                <div class="comment mt-4 text-justify float-left">
+                    {% for comment in post.comments.all %}
+                    
+                    <h4>{{comment.name}}</h4>
+                    <span>- {{ comment.date_added}}</span>
+                    <br>
+                    <p>{{comment.body|linebreaks}}</p>
+                    
+                    <hr>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <br/><br/>
+                {% if user.is_authenticated %}
+                <a href="{% url 'AddCommentView' post.pk%}" class="btn btn-success">Add Comment</a>
+                {%else%}
+                <a href="{% url 'login'%}" class="btn btn-success">Add Comment</a>
+                {%endif%}
+              
+                
+            
+            
+        </div>
+    </div>
+</section>
+<br/>
+
+<div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-md-2">
+        
+        {% if post.author.profile.profile_pic%}
+        <img src="{{post.author.profile.profile_pic.url}}" class="img-fluid rounded-start" width=200, height=200>
+        {% else %}
+        <img src="{%static 'weblog/images/defaul_img.jpg'%}" class="img-fluid rounded-start" width=200, height=200>
+        {%endif%}
+      </div>
+      <div class="col-md-10">
+        <div class="card-body">
+          <h5 class="card-title">{{ post.author}}</h5>
+          <p class="card-text">{{post.author.profile.bio}}</p>
+          <small><a href="{%url 'profile-user' post.author.profile.id%}">Profile page</a></small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    
+{%endblock%}
+
+
+
+
+<!-- Main Body -->
+

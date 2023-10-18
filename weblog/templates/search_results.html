@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content%}
+
+<h1>Search</h1>
+{% if searched %}
+    {% for post in post%}
+    {{post}}
+    {%endfor%}
+{%else%}
+Can't not found
+{%endif%}
+{%endblock%}
